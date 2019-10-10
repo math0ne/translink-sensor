@@ -18,9 +18,10 @@ REQUIREMENTS = [ ]
 
 _LOGGER = logging.getLogger(__name__)
 
-CONF_ATTRIBUTION = "Data provided by translink"
+CONF_ATTRIBUTION = "Data provided by TransLink Open API"
 CONF_STOPID = 'stop_id'
 CONF_ROUTENUMBER = 'route_number'
+CONF_APIKEY = 'api_key'
 
 DEFAULT_NAME = 'Translink Next Bus'
 DEFAULT_ICON = 'mdi:bus'
@@ -30,6 +31,7 @@ SCAN_INTERVAL = timedelta(seconds=240)
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_STOPID): cv.string,
     vol.Required(CONF_ROUTENUMBER): cv.string,
+    vol.Required(CONF_APIKEY): cv.string,
     vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
 })
 
@@ -40,20 +42,21 @@ def async_setup_platform(hass, config, async_add_devices, discovery_info=None):
     name = config.get(CONF_NAME)
     stopid = config.get(CONF_STOPID)
     routenumber = config.get(CONF_ROUTENUMBER)
+    apikey = config.get(CONF_APIKEY)
 
     session = async_get_clientsession(hass)
 
     async_add_devices(
-        [TranslinkPublicTransportSensor(name, stopid, routenumber)],update_before_add=True)
+        [TranslinkPublicTransportSensor(name, stopid, routenumber, apikey)],update_before_add=True)
 
 class TranslinkPublicTransportSensor(Entity):
-    #attr = {}
 
-    def __init__(self, name, stopid, routenumber):
+    def __init__(self, name, stopid, routenumber, apikey):
         """Initialize the sensor."""
         self._name = name
         self._stopid = stopid
         self._routenumber = routenumber
+        self._apikey = apikey
         self._state = None
         self._icon = DEFAULT_ICON
 
@@ -77,7 +80,7 @@ class TranslinkPublicTransportSensor(Entity):
     @asyncio.coroutine
     def async_update(self):
         translinkfile = "tmpstopinfo.xml"
-        translinkurl="http://api.translink.ca/rttiapi/v1/stops/" + self._stopid + "/estimates?routeNo=" + self._routenumber + "&apikey=t4v0aHu5nc79hefnbMNk&count=3"
+        translinkurl="http://api.translink.ca/rttiapi/v1/stops/" + self._stopid + "/estimates?routeNo=" + self._routenumber + "&apikey=" + self._apikey + "&count=3"
 
         opener = urllib.request.build_opener()
         opener.addheaders = [('User-agent', 'Mozilla/5.0')]

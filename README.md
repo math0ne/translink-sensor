@@ -4,6 +4,8 @@ This is home assistant custom component to pull bus times from TransLink Open AP
 
 You can find stop id's here: https://tp.translink.ca/hiwire?.a=iLocationLookup
 
+Register for an API key here: https://developer.translink.ca/Account/Register
+
 ### Installation
 
 Copy this folder to `<config_dir>/custom_components/translink_sensor/`.
@@ -14,6 +16,7 @@ Add the following to your `configuration.yaml` file:
 # Example configuration.yaml entry
 sensor:
   - platform: translink_sensor
+    api_key: XXX
     stop_id: 58652
     route_number: 16
 ```
