@@ -17,3 +17,9 @@ sensor:
     stop_id: 58652
     route_number: 16
 ```
+### Credits
+
+This based on the work ok:
+
+* johnlarusic: https://github.com/johnlarusic/lebus
+* amaximus: https://github.com/amaximus/bkk_stop
