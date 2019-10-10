@@ -19,7 +19,7 @@ sensor:
 ```
 ### Credits
 
-This based on the work ok:
+This based on the work of:
 
 * johnlarusic: https://github.com/johnlarusic/lebus
 * amaximus: https://github.com/amaximus/bkk_stop
