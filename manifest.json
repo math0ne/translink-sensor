@@ -1,0 +1,8 @@
+{
+  "domain": "translink_sensor",
+  "name": "Translink Sensor",
+  "documentation": "https://github.com/math0ne/translink_sensor",
+  "dependencies": [],
+  "codeowners": [],
+  "requirements": []
+}
