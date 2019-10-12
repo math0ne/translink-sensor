@@ -63,23 +63,29 @@ class TranslinkPublicTransportSensor(Entity):
     @property
     def device_state_attributes(self):
         attr = {}
-        translinkfile = "tmpstopinfo.xml"
+        translinkfile = "/tmp/tmpstopinfo_" + self._routenumber + "_" + self._stopid + ".xml"
         translinkdata = ET.parse(translinkfile).getroot()
         
         attr["route_number"] = self._routenumber
         attr["stop_id"] = self._stopid
 
+        leavetimes = translinkdata.findall("./NextBus/Schedules/Schedule/ExpectedLeaveTime")
+        countdowntimes = translinkdata.findall("./NextBus/Schedules/Schedule/ExpectedCountdown")
+
         count=0
-        for schedule in translinkdata.findall("./NextBus/Schedules/Schedule/ExpectedLeaveTime"):
+        while count < 3:
+            if count == 0:
+                attr["next_bus_countdown"] = countdowntimes[count].text
+
+            scheduletextsplit = leavetimes[count].text.split(" ")
+            attr["buses_" + str(count + 1)] = scheduletextsplit
             count +=1
-            attr["buses_" + str(count)] = schedule.text
-            #_LOGGER.warning(schedule.text)
 
         return attr
 
     @asyncio.coroutine
     def async_update(self):
-        translinkfile = "tmpstopinfo.xml"
+        translinkfile = "/tmp/tmpstopinfo_" + self._routenumber + "_" + self._stopid + ".xml"
         translinkurl="http://api.translink.ca/rttiapi/v1/stops/" + self._stopid + "/estimates?routeNo=" + self._routenumber + "&apikey=" + self._apikey + "&count=3"
 
         opener = urllib.request.build_opener()
