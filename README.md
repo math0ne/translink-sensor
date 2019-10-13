@@ -15,10 +15,10 @@ Copy this folder to `<config_dir>/custom_components/translink_sensor/`.
 ### HACS Custom Install
 
 1. Go to the community tab of your home assistant installation
-2) Click settings
-3) Add "https://github.com/math0ne/translink-sensor" with the type **Integration**
-4) Click Save
-5) Restart home assistant
+2. Click settings
+3. Add "https://github.com/math0ne/translink-sensor" with the type **Integration**
+4. Click Save
+5. Restart home assistant
 
 ### Usage
 
