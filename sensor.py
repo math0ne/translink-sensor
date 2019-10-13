@@ -72,14 +72,16 @@ class TranslinkPublicTransportSensor(Entity):
         leavetimes = translinkdata.findall("./NextBus/Schedules/Schedule/ExpectedLeaveTime")
         countdowntimes = translinkdata.findall("./NextBus/Schedules/Schedule/ExpectedCountdown")
 
-        count=0
-        while count < 3:
-            if count == 0:
-                attr["next_bus_countdown"] = countdowntimes[count].text
+        if leavetimes:
+            count=0
+            while count < 3:
+                if count == 0:
+                    attr["next_bus_countdown"] = countdowntimes[count].text
 
-            scheduletextsplit = leavetimes[count].text.split(" ")
-            attr["buses_" + str(count + 1)] = scheduletextsplit
-            count +=1
+                scheduletextsplit = leavetimes[count].text.split(" ")
+                scheduletextsplit2 = scheduletextsplit[0].split(",")
+                attr["buses_" + str(count + 1)] = scheduletextsplit2[0]
+                count +=1
 
         return attr
 
